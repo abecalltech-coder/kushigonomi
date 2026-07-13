@@ -44,12 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.05, rootMargin: '0px 0px -5% 0px' }
     );
     reveals.forEach((el) => io.observe(el));
   } else {
     reveals.forEach((el) => el.classList.add('is-visible'));
   }
+  // セーフティネット：何らかの理由でIntersectionObserverが発火しない場合でも
+  // 一定時間後には必ず表示させる（要素が消えたままにならないようにする）
+  setTimeout(() => {
+    reveals.forEach((el) => el.classList.add('is-visible'));
+  }, 2500);
 
   // --- 湯気のアニメーション用パーツを自動生成 ---
   document.querySelectorAll('.steam-wrap').forEach((wrap) => {
